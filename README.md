@@ -1,8 +1,8 @@
-# 🔬 Thermal Conductivity Modeling Suite v2.0
+# 🔬 Thermal Conductivity Modeling Suite v1.0
 
 Professional desktop application for experimental data analysis and modeling of thermal conductivity of composite materials.
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-green)
 ![License](https://img.shields.io/badge/license-MIT-orange)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
@@ -18,7 +18,7 @@ The **Thermal Conductivity Modeling Suite** is a professional desktop applicatio
 - **Multi-file analysis** for batch processing
 - **Professional PDF report generation**
 
-## ✨ New in v2.0
+## ✨ New in v1.0
 
 - 🔍 **Auto-Discover New Models** - Automatically find mathematical models that fit your data
 - 🔄 **Dual Mode Support** - Switch seamlessly between Nanothermite and Polymer Composite modes
@@ -71,7 +71,7 @@ The **Thermal Conductivity Modeling Suite** is a professional desktop applicatio
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/thermal-conductivity-modeling.git
+git clone https://github.com/khadev/thermal-conductivity-modeling.git
 cd thermal-conductivity-modeling
 
 # Install dependencies

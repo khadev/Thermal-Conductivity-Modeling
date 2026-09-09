@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thermal-conductivity-modeling"
+version = "1.0.0"
+description = "Thermal Conductivity Modeling Suite v1 "
+requires-python = ">=3.10"
+dependencies = [
+    "PyQt6>=6.6.0",
+    "numpy>=2.1.0",
+    "scipy>=1.14.0",
+    "pandas>=2.2.0",
+    "matplotlib>=3.8.0",
+    "openpyxl>=3.1.0",
+    "xlsxwriter>=3.2.0",
+    "reportlab>=4.2.0",
+    "pillow>=10.0.0",
+]
+
+[project.scripts]
+thermal-conductivity = "thermal_conductivity.main:main"

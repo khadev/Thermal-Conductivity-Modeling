@@ -310,4 +310,3 @@ If you use this software in your research, please cite:
 - ✅ Publication-ready plots
 - ✅ Multi-file analysis
 - ✅ PDF report generation
-```

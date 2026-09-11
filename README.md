@@ -317,7 +317,7 @@ If you use this software in your research, please cite:
      `wrapped_func`, so custom material selection is respected during fitting
 - ✅ 25+ thermal conductivity models with verified physics 
 
-### v2.0.0 (Current)
+### v2.0.0 
 - ✅ Model compatibility checker with scientific validation
 - ✅ Professional compatibility dialog
 - ✅ Mode-specific default models

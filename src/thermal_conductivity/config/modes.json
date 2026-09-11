@@ -1,0 +1,148 @@
+{
+  "modes": {
+    "nanothermite": {
+      "id": "nanothermite",
+      "name": "Nanothermite",
+      "icon": "🔥",
+      "description": "Energetic Material Composites",
+      "default_matrix": "Al",
+      "default_filler": "CuO",
+      "matrix_label": "Reductant (Matrix)",
+      "filler_label": "Oxidizer (Filler)",
+      "phi_label": "Reductant Volume Fraction, φ",
+      "one_minus_phi_label": "Oxidizer Volume Fraction, (1-φ)",
+      "data_column_phi": "Red_volume_fraction",
+      "data_column_1_minus_phi": "Oxy_volume_fraction",
+      "theme": {
+        "color_primary": "#c0392b",
+        "color_secondary": "#f39c12",
+        "color_accent": "#e74c3c",
+        "background": "#1a1a2e",
+        "surface": "#2d2d44",
+        "text": "#ffffff",
+        "text_secondary": "#bdc3c7",
+        "gradient_start": "#1a1a2e",
+        "gradient_end": "#2d2d44"
+      },
+      "materials": {
+        "matrix": [
+          "Al", "Mg", "Ti", "Zr", "B", "Si", "Fe", "Ni", "Zn", "Sn", "Cu",
+          "AlH3", "MgH2", "LiAlH4", "NaBH4", "Carbon", "Graphite", "Graphene", "CNT"
+        ],
+        "filler": [
+          "CuO", "Fe2O3", "MnO2", "MoO3", "WO3", "Bi2O3",
+          "SnO2", "PbO2", "Cr2O3", "Co3O4", "NiO", "V2O5",
+          "KClO4", "NH4ClO4", "KNO3", "NaNO3", "NH4NO3",
+          "Teflon", "PTFE", "PFOA"
+        ]
+      },
+      "default_k_matrix": 237.0,
+      "default_k_filler": 33.0,
+      "default_rho_matrix": 2700.0,
+      "default_rho_filler": 6315.0,
+      "k_matrix_values": {
+        "Al": 237.0, "Mg": 156.0, "Ti": 21.9, "Zr": 22.6,
+        "B": 27.4, "Si": 148.0, "Cu": 401.0, "Fe": 80.2,
+        "Ni": 90.7, "Zn": 116.0, "Sn": 66.6,
+        "AlH3": 20.0, "MgH2": 15.0, "LiAlH4": 10.0, "NaBH4": 12.0,
+        "Carbon": 5.0, "Graphite": 150.0, "Graphene": 300.0, "CNT": 200.0
+      },
+      "k_filler_values": {
+        "CuO": 33.0, "Fe2O3": 4.0, "MnO2": 5.0, "MoO3": 14.0,
+        "WO3": 14.0, "Bi2O3": 2.5, "SnO2": 4.5, "PbO2": 2.0,
+        "Cr2O3": 3.0, "Co3O4": 6.0, "NiO": 12.0, "V2O5": 8.0,
+        "KClO4": 2.0, "NH4ClO4": 2.5, "KNO3": 3.0, "NaNO3": 2.8, "NH4NO3": 2.2,
+        "Teflon": 0.25, "PTFE": 0.25, "PFOA": 0.20
+      },
+      "rho_matrix_values": {
+        "Al": 2700.0, "Mg": 1740.0, "Ti": 4500.0, "Zr": 6500.0,
+        "B": 2460.0, "Si": 2330.0, "Cu": 8960.0, "Fe": 7870.0,
+        "Ni": 8900.0, "Zn": 7140.0, "Sn": 7310.0,
+        "AlH3": 1480.0, "MgH2": 1450.0, "LiAlH4": 917.0, "NaBH4": 1070.0,
+        "Carbon": 2260.0, "Graphite": 2260.0, "Graphene": 2200.0, "CNT": 2100.0
+      },
+      "rho_filler_values": {
+        "CuO": 6315.0, "Fe2O3": 5240.0, "MnO2": 5200.0, "MoO3": 4690.0,
+        "WO3": 7160.0, "Bi2O3": 8900.0, "SnO2": 6950.0, "PbO2": 9100.0,
+        "Cr2O3": 5200.0, "Co3O4": 6000.0, "NiO": 6670.0, "V2O5": 3360.0,
+        "KClO4": 2520.0, "NH4ClO4": 1950.0, "KNO3": 2110.0, "NaNO3": 2260.0, "NH4NO3": 1720.0,
+        "Teflon": 2200.0, "PTFE": 2200.0, "PFOA": 1800.0
+      }
+    },
+    
+    "polymer": {
+      "id": "polymer",
+      "name": "Polymer Composite",
+      "icon": "🧪",
+      "description": "Polymer Matrix Composites",
+      "default_matrix": "Epoxy",
+      "default_filler": "Graphene",
+      "matrix_label": "Polymer Matrix",
+      "filler_label": "Conductive Filler",
+      "phi_label": "Polymer Volume Fraction, φ",
+      "one_minus_phi_label": "Filler Volume Fraction, (1-φ)",
+      "data_column_phi": "Matrix_volume_fraction",
+      "data_column_1_minus_phi": "Filler_volume_fraction",
+      "theme": {
+        "color_primary": "#1a5490",
+        "color_secondary": "#27ae60",
+        "color_accent": "#2ecc71",
+        "background": "#f0f4f8",
+        "surface": "#ffffff",
+        "text": "#2c3e50",
+        "text_secondary": "#7f8c8d",
+        "gradient_start": "#1a5490",
+        "gradient_end": "#2980b9"
+      },
+      "materials": {
+        "matrix": [
+          "Epoxy", "Polyethylene (PE)", "Polypropylene (PP)",
+          "Polystyrene (PS)", "Polyimide", "Silicone", "PMMA",
+          "Nylon", "PET", "PEEK", "PTFE"
+        ],
+        "filler": [
+          "Graphene", "Carbon Nanotube (CNT)", "Al2O3", "SiO2",
+          "BN", "SiC", "Diamond", "Cu", "Al", "Ag",
+          "Graphite", "Carbon Black", "ZnO", "TiO2"
+        ]
+      },
+      "default_k_matrix": 0.2,
+      "default_k_filler": 300.0,
+      "default_rho_matrix": 1200.0,
+      "default_rho_filler": 2200.0,
+      "k_matrix_values": {
+        "Epoxy": 0.2, "Polyethylene (PE)": 0.4, "Polypropylene (PP)": 0.2,
+        "Polystyrene (PS)": 0.15, "Polyimide": 0.3, "Silicone": 0.2,
+        "PMMA": 0.2, "Nylon": 0.25, "PET": 0.3, "PEEK": 0.25,
+        "PTFE": 0.25
+      },
+      "k_filler_values": {
+        "Graphene": 300.0, "Carbon Nanotube (CNT)": 200.0,
+        "Al2O3": 30.0, "SiO2": 1.4, "BN": 60.0,
+        "SiC": 100.0, "Diamond": 1000.0, "Cu": 401.0,
+        "Al": 237.0, "Ag": 430.0, "Graphite": 150.0,
+        "Carbon Black": 6.0, "ZnO": 30.0, "TiO2": 8.0
+      },
+      "rho_matrix_values": {
+        "Epoxy": 1200.0, "Polyethylene (PE)": 950.0, "Polypropylene (PP)": 910.0,
+        "Polystyrene (PS)": 1050.0, "Polyimide": 1420.0, "Silicone": 1100.0,
+        "PMMA": 1190.0, "Nylon": 1140.0, "PET": 1380.0, "PEEK": 1320.0,
+        "PTFE": 2200.0
+      },
+      "rho_filler_values": {
+        "Graphene": 2200.0, "Carbon Nanotube (CNT)": 2100.0,
+        "Al2O3": 3900.0, "SiO2": 2650.0, "BN": 2190.0,
+        "SiC": 3210.0, "Diamond": 3510.0, "Cu": 8960.0,
+        "Al": 2700.0, "Ag": 10500.0, "Graphite": 2260.0,
+        "Carbon Black": 1800.0, "ZnO": 5610.0, "TiO2": 4230.0
+      }
+    }
+  },
+  
+  "application": {
+    "name": "Thermal Conductivity Modeling Suite",
+    "version": "1.0.0",
+    "default_mode": "nanothermite",
+    "supported_modes": ["nanothermite", "polymer"]
+  }
+}

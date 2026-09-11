@@ -78,7 +78,7 @@ class SplashScreen(QSplashScreen):
         painter.setFont(sub_font)
         painter.setPen(QColor("#bdc3c7"))
         painter.drawText(0, 180, 700, 30, Qt.AlignmentFlag.AlignCenter,
-                        "v2.0 - Dual Mode Analysis")
+                        "v3.0 - Dual Mode Analysis")
 
         # Version
         ver_font = QFont("Arial", 10)

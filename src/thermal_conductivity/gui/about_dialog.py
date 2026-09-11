@@ -37,7 +37,7 @@ class AboutDialog(QDialog):
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
-        subtitle = QLabel("Version 2.0.0")
+        subtitle = QLabel("Version 3.0.0")
         subtitle.setStyleSheet("font-size: 14px; color: #7f8c8d;")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(subtitle)

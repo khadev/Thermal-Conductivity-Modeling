@@ -10,7 +10,7 @@ from ..core.models import get_model_registry
 
 class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=9, height=7, dpi=150):
-        self.fig = Figure(figsize=(width, height), dpi=150)
+        self.fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = self.fig.add_subplot(111)
         super().__init__(self.fig)
         self.setParent(parent)
@@ -41,11 +41,12 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
         ax = canvas.axes
         ax.clear()
 
+        # ---------- X data ----------
         if x_col in df.columns:
             xdata = df[x_col].values
         else:
             xdata = df["Filler_volume_fraction"].values
-                
+
         k_meas = df["k_meas"].values
         k_err = df["k_std_dev"].values if "k_std_dev" in df.columns else np.full(len(df), np.nan)
 
@@ -54,14 +55,17 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
         k_meas_filtered = k_meas[mask]
         k_err_filtered = k_err[mask] if len(k_err) == len(xdata) else np.full(len(xdata_filtered), np.nan)
 
-        # Experimental data
+        # ---------- Experimental data ----------
         has_err = not np.all(np.isnan(k_err_filtered))
         if has_err:
-            ax.errorbar(xdata_filtered, k_meas_filtered, yerr=k_err_filtered, fmt="o", color="black",
-                       markersize=8, capsize=4, label="Experimental", zorder=5, linewidth=1.5)
+            ax.errorbar(xdata_filtered, k_meas_filtered, yerr=k_err_filtered,
+                        fmt="o", color="black", markersize=8,
+                        capsize=4, label="Experimental", zorder=5, linewidth=1.5)
         else:
-            ax.scatter(xdata_filtered, k_meas_filtered, color="black", s=80, zorder=5, label="Experimental")
+            ax.scatter(xdata_filtered, k_meas_filtered, color="black",
+                       s=80, zorder=5, label="Experimental")
 
+        # ---------- Model curves ----------
         MODEL_REGISTRY = get_model_registry(mode)
 
         x_smooth = np.linspace(x_min, x_max, 200)
@@ -72,7 +76,7 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
             key=lambda x: x[1].get("r2", -1) if x[1].get("success", False) else -1,
             reverse=True
         )
-        
+
         discovered = []
         standard = []
         for name, result in sorted_results:
@@ -85,11 +89,11 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
                 discovered.append((name, result))
             else:
                 standard.append((name, result))
-        
+
         standard_to_show = standard[:5]
         discovered_to_show = discovered[:3]
         models_to_show = standard_to_show + discovered_to_show
-        
+
         if len(models_to_show) > max_models_to_show:
             models_to_show = models_to_show[:max_models_to_show]
 
@@ -121,15 +125,16 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
                     linewidth = meta.get("linewidth", 1.8)
                     alpha = 0.85
                 ax.plot(x_smooth, y_smooth, color=color,
-                       linestyle=linestyle, linewidth=linewidth,
-                       label=label, alpha=alpha, zorder=3)
+                        linestyle=linestyle, linewidth=linewidth,
+                        label=label, alpha=alpha, zorder=3)
             except Exception as e:
                 print(f"Error plotting {name}: {e}")
                 continue
 
+        # ---------- Labels & axes ----------
         if x_label is None:
             x_label = f"{filler} Volume Fraction, φ"
-        
+
         ax.set_xlabel(x_label, fontsize=13, fontweight='bold')
         ax.set_ylabel("Thermal Conductivity, $k$ (W/m·K)", fontsize=13, fontweight='bold')
         ax.set_title(f"{material}", fontsize=14, fontweight='bold')
@@ -139,7 +144,7 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
         else:
             ax.set_yscale("linear")
 
-        # === FORCE PLAIN NUMBERS ===
+        # Force plain numbers on y-axis
         ax.yaxis.set_major_formatter(plt.ScalarFormatter(useOffset=False, useMathText=False))
         ax.ticklabel_format(style='plain', axis='y', useOffset=False)
         ax.yaxis.get_major_formatter().set_scientific(False)
@@ -147,14 +152,37 @@ def create_main_plot(canvas, df, fit_results, style_name="Thermochimica Acta",
 
         ax.set_xlim(x_min, x_max)
 
+        # ---------- Legend ----------
         if show_legend:
             handles, labels = ax.get_legend_handles_labels()
             if handles:
-                ax.legend(loc='best', framealpha=0.9, fontsize=8,
-                         handlelength=1.2, handletextpad=0.5,
-                         borderpad=0.3, labelspacing=0.2)
+                n_items = len(labels)
+                # Auto-tune legend font size based on number of items
+                if n_items <= 4:
+                    legend_font = 9
+                elif n_items <= 6:
+                    legend_font = 8
+                elif n_items <= 8:
+                    legend_font = 7
+                else:
+                    legend_font = 6
 
-        canvas.fig.tight_layout()
+                if legend_format == "compact":
+                    ax.legend(loc='best', framealpha=0.9,
+                              fontsize=legend_font,
+                              handlelength=1.2, handletextpad=0.5,
+                              borderpad=0.3, labelspacing=0.2)
+                else:
+                    ax.legend(loc='best', framealpha=0.9,
+                              fontsize=legend_font + 1,
+                              handlelength=1.6, handletextpad=0.6,
+                              borderpad=0.4, labelspacing=0.3)
+
+        # Extra padding so nothing gets cut off
+        try:
+            canvas.fig.tight_layout(pad=1.2)
+        except Exception:
+            canvas.fig.tight_layout()
         canvas.draw()
 
 
@@ -175,6 +203,7 @@ def create_residuals_plot(canvas, df, fit_results, style_name="Thermochimica Act
         ax = canvas.axes
         ax.clear()
 
+        # ---------- X data ----------
         if x_col in df.columns:
             xdata = df[x_col].values
         else:
@@ -190,7 +219,7 @@ def create_residuals_plot(canvas, df, fit_results, style_name="Thermochimica Act
             key=lambda x: x[1].get("r2", -1) if x[1].get("success", False) else -1,
             reverse=True
         )
-        
+
         discovered = []
         standard = []
         for name, result in sorted_results:
@@ -203,11 +232,11 @@ def create_residuals_plot(canvas, df, fit_results, style_name="Thermochimica Act
                 discovered.append((name, result))
             else:
                 standard.append((name, result))
-        
+
         standard_to_show = standard[:5]
         discovered_to_show = discovered[:3]
         models_to_show = standard_to_show + discovered_to_show
-        
+
         if len(models_to_show) > max_models_to_show:
             models_to_show = models_to_show[:max_models_to_show]
 
@@ -235,23 +264,38 @@ def create_residuals_plot(canvas, df, fit_results, style_name="Thermochimica Act
                 alpha = 0.7
                 zorder = 3
             ax.scatter(xdata_filtered, residuals_filtered, color=color,
-                      marker=marker, s=size, alpha=alpha, label=name, zorder=zorder)
+                       marker=marker, s=size, alpha=alpha,
+                       label=name, zorder=zorder)
 
+        # Zero line
         ax.axhline(0, color="black", linewidth=1.5, linestyle="-", zorder=2)
 
+        # ---------- Stats box ----------
         if all_residuals:
-            mean_resid = np.mean(all_residuals)
-            std_resid = np.std(all_residuals)
-            stats_text = f"Mean: {mean_resid:.3f} W/m·K\nStd: {std_resid:.3f} W/m·K"
-            ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, 
-                   verticalalignment='top',
-                   bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='black'),
-                   fontsize=10, family='monospace')
-            max_resid = np.max(np.abs(all_residuals))
+            mean_resid = float(np.mean(all_residuals))
+            std_resid = float(np.std(all_residuals))
+            max_resid = float(np.max(np.abs(all_residuals)))
+
+            # Compact text box, smaller font
+            stats_text = f"Mean: {mean_resid:.2f}\nStd: {std_resid:.2f}"
+            ax.text(0.02, 0.98, stats_text,
+                    transform=ax.transAxes,
+                    verticalalignment='top',
+                    horizontalalignment='left',
+                    bbox=dict(boxstyle='round,pad=0.4',
+                              facecolor='white',
+                              alpha=0.9,
+                              edgecolor='black',
+                              linewidth=0.6),
+                    fontsize=8,
+                    family='monospace',
+                    zorder=10)
+
             if max_resid > 0:
                 y_max = max_resid * 1.3
                 ax.set_ylim(-y_max, y_max)
 
+        # ---------- Labels ----------
         if x_label is None:
             x_label = f"{filler} Volume Fraction, φ"
 
@@ -261,17 +305,44 @@ def create_residuals_plot(canvas, df, fit_results, style_name="Thermochimica Act
 
         ax.set_xlim(x_min, x_max)
 
+        # Plain numbers on y-axis
         ax.yaxis.set_major_formatter(plt.ScalarFormatter(useOffset=False, useMathText=False))
         ax.ticklabel_format(style='plain', axis='y', useOffset=False)
         ax.yaxis.get_major_formatter().set_scientific(False)
         ax.yaxis.get_major_formatter().set_powerlimits((0, 0))
 
+        # ---------- Legend ----------
         if show_legend:
             handles, labels = ax.get_legend_handles_labels()
             if handles:
-                ax.legend(loc='best', framealpha=0.9, fontsize=8,
-                         handlelength=1.2, handletextpad=0.5,
-                         borderpad=0.3, labelspacing=0.2)
+                n_items = len(labels)
+                # Smaller legend so it doesn't collide with stats box
+                if n_items <= 3:
+                    legend_font = 8
+                    ncol = 1
+                elif n_items <= 5:
+                    legend_font = 7
+                    ncol = 1
+                elif n_items <= 8:
+                    legend_font = 6
+                    ncol = 1
+                else:
+                    legend_font = 6
+                    ncol = 2
 
-        canvas.fig.tight_layout()
+                # Place legend in upper right, away from stats box
+                ax.legend(loc='upper right',
+                          framealpha=0.85,
+                          fontsize=legend_font,
+                          handlelength=1.0,
+                          handletextpad=0.4,
+                          borderpad=0.3,
+                          labelspacing=0.15,
+                          ncol=ncol)
+
+        # Extra padding so nothing gets cut
+        try:
+            canvas.fig.tight_layout(pad=1.2)
+        except Exception:
+            canvas.fig.tight_layout()
         canvas.draw()
